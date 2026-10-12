@@ -33,6 +33,12 @@ module.exports = function (env) {
 
         entry: './index.tsx',
         mode: IS_RELEASE ? 'production' : 'development',
+        cache: {
+            type: 'filesystem',
+            buildDependencies: {
+                config: [__filename],
+            },
+        },
         module: {
             rules: rules(),
         },
