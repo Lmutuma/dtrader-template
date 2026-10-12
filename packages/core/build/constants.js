@@ -66,6 +66,12 @@ const ALIASES = {
 
 const rules = (is_test_env = false) => [
     {
+        test: /_common[\\/].*\.js$/,
+        resolve: {
+            fullySpecified: false,
+        },
+    },
+    {
         // https://github.com/webpack/webpack/issues/11467
         test: /\.m?js/,
         include: /node_modules/,
