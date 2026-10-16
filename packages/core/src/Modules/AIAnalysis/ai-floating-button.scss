@@ -1,0 +1,23 @@
+.ai-floating-button {
+    position: fixed;
+    right: 1.6rem;
+    top: 42rem;
+    width: 24rem;
+    z-index: 9999;
+
+    @media (max-width: 768px) {
+        bottom: 8rem;
+        top: auto;
+    }
+
+    &__btn {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        width: 100%;
+    }
+
+    &__label {
+        align-items: center;
+        display: inline-flex;
+        gap: 0.6rem;
+    }
+}
