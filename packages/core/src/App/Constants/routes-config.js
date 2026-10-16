@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { LegacyPositionIcon, LegacyProfitTableIcon, LegacyReportsIcon, LegacyStatementIcon } from '@deriv/quill-icons';
+import {
+    LegacyPositionIcon,
+    LegacyProfitTableIcon,
+    LegacyReportsIcon,
+    LegacyStatementIcon,
+    StandaloneChartLineUpDownRegularIcon,
+} from '@deriv/quill-icons';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv-com/translations';
 
@@ -10,6 +16,8 @@ import Endpoint from 'Modules/Endpoint';
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
 const MenuPage = React.lazy(() => import(/* webpackChunkName: "menu" */ 'Modules/Menu'));
+
+const AIAnalysis = React.lazy(() => import(/* webpackChunkName: "ai-analysis" */ 'Modules/AIAnalysis'));
 
 const Trader = React.lazy(() => import(/* webpackChunkName: "trader" */ '@deriv/trader'));
 
@@ -47,6 +55,13 @@ const getModules = () => {
                     protected: true,
                 },
             ],
+        },
+        {
+            path: routes.ai_analysis,
+            component: AIAnalysis,
+            getTitle: () => localize('AI Analysis'),
+            icon_component: <StandaloneChartLineUpDownRegularIcon />,
+            protected: false,
         },
         {
             path: routes.menu,

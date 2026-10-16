@@ -1,0 +1,135 @@
+.ai-analysis {
+    margin: 0 auto;
+    max-width: 900px;
+    padding: 2.4rem;
+
+    &__header {
+        margin-bottom: 2.4rem;
+    }
+
+    &__title {
+        margin-bottom: 0.4rem;
+    }
+
+    &__subtitle {
+        color: var(--text-less-prominent);
+    }
+
+    &__grid {
+        display: grid;
+        gap: 1.6rem;
+        grid-template-columns: 1fr 2fr 1fr;
+        margin-bottom: 2.4rem;
+
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__card {
+        background: var(--general-section-1);
+        border-radius: 0.8rem;
+        padding: 1.6rem;
+
+        &--primary {
+            background: var(--general-main-1);
+        }
+    }
+
+    &__label {
+        color: var(--text-less-prominent);
+        letter-spacing: 0.1rem;
+        margin-bottom: 0.8rem;
+    }
+
+    &__value {
+        font-size: 2.4rem;
+        font-weight: bold;
+        margin-bottom: 0.8rem;
+    }
+
+    &__signal {
+        border-radius: 0.4rem;
+        display: inline-block;
+        font-size: 2rem;
+        font-weight: bold;
+        letter-spacing: 0.1rem;
+        padding: 0.6rem 1.2rem;
+
+        &--buy {
+            background: var(--color-status-success);
+            color: #ffffff;
+        }
+
+        &--sell {
+            background: var(--color-status-danger);
+            color: #ffffff;
+        }
+
+        &--neutral {
+            background: var(--color-status-warning);
+            color: #181c25;
+        }
+    }
+
+    &__risk {
+        border-radius: 0.4rem;
+        display: inline-block;
+        font-size: 1.6rem;
+        font-weight: bold;
+        padding: 0.4rem 1rem;
+
+        &--low {
+            background: var(--color-status-success);
+            color: #ffffff;
+        }
+
+        &--medium {
+            background: var(--color-status-warning);
+            color: #181c25;
+        }
+
+        &--high {
+            background: var(--color-status-danger);
+            color: #ffffff;
+        }
+    }
+
+    &__bar {
+        background: var(--general-section-2);
+        border-radius: 0.4rem;
+        height: 0.8rem;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    &__bar-fill {
+        background: var(--brand-primary, #118e1c);
+        border-radius: 0.4rem;
+        height: 100%;
+        transition: width 0.3s ease;
+    }
+
+    &__metrics {
+        background: var(--general-section-1);
+        border-radius: 0.8rem;
+        display: grid;
+        gap: 1.6rem;
+        grid-template-columns: repeat(3, 1fr);
+        margin-bottom: 2.4rem;
+        padding: 1.6rem;
+
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__metric {
+        text-align: center;
+    }
+
+    &__disclaimer {
+        color: var(--text-less-prominent);
+        text-align: center;
+    }
+}

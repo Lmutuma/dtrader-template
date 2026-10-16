@@ -10,6 +10,12 @@ export const routes = {
     trader_positions: '/positions',
     contract: '/contract/:contract_id',
 
+    // AI routes
+    ai_analysis: '/ai-analysis',
+
+    // AI routes
+    ai_analysis: '/ai-analysis',
+
     // Reports routes
     reports: '/reports',
     positions: '/reports/positions',
