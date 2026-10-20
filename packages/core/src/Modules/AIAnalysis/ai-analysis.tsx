@@ -4,8 +4,6 @@ import { observer } from 'mobx-react-lite';
 import { Text } from '@deriv/components';
 import { localize } from '@deriv-com/translations';
 
-import './ai-analysis.scss';
-
 type TSignal = 'BUY' | 'SELL' | 'NEUTRAL';
 type TRisk = 'LOW' | 'MEDIUM' | 'HIGH';
 
