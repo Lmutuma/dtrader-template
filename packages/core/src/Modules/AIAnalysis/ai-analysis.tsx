@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
 import { Text } from '@deriv/components';
@@ -7,11 +8,26 @@ import { localize } from '@deriv-com/translations';
 import { analyze, TAnalysis } from './indicators';
 import { useTicks } from './use-ticks';
 
-// Default symbol. In a future iteration, this can be read from the current trade symbol.
-const DEFAULT_SYMBOL = 'R_100'; // Volatility 100 Index
+const STORAGE_KEY = 'ai_analysis_last_symbol';
+const DEFAULT_SYMBOL = 'R_100';
+
+const useCurrentSymbol = (): string => {
+    const location = useLocation();
+    return React.useMemo(() => {
+        const params = new URLSearchParams(location.search);
+        const from_url = params.get('symbol');
+        if (from_url) return from_url;
+        try {
+            return localStorage.getItem(STORAGE_KEY) ?? DEFAULT_SYMBOL;
+        } catch {
+            return DEFAULT_SYMBOL;
+        }
+    }, [location.search]);
+};
 
 const AIAnalysis = observer(() => {
-    const { prices, tick_count, error, loading } = useTicks(DEFAULT_SYMBOL);
+    const current_symbol = useCurrentSymbol();
+    const { prices, tick_count, error, loading } = useTicks(current_symbol);
     const analysis: TAnalysis | null = analyze(prices);
 
     if (loading && tick_count === 0) {
@@ -22,7 +38,7 @@ const AIAnalysis = observer(() => {
                         {localize('AI Analysis')}
                     </Text>
                     <Text as='p' size='xs' className='ai-analysis__subtitle'>
-                        {localize('Loading live market data...')}
+                        {localize('Loading live market data for')} {current_symbol}...
                     </Text>
                 </div>
             </div>
@@ -52,7 +68,7 @@ const AIAnalysis = observer(() => {
                         {localize('AI Analysis')}
                     </Text>
                     <Text as='p' size='xs' className='ai-analysis__subtitle'>
-                        {localize(`Collecting data... ${tick_count} / 20 ticks`)}
+                        {localize(`Collecting data for ${current_symbol}... ${tick_count} / 20 ticks`)}
                     </Text>
                 </div>
             </div>
@@ -66,7 +82,7 @@ const AIAnalysis = observer(() => {
         <div className='ai-analysis'>
             <div className='ai-analysis__header'>
                 <Text as='h1' weight='bold' size='m' className='ai-analysis__title'>
-                    {localize('AI Analysis')} — {DEFAULT_SYMBOL}
+                    {localize('AI Analysis')} — {current_symbol}
                 </Text>
                 <Text as='p' size='xs' className='ai-analysis__subtitle'>
                     {localize('Live indicator-based market signals. Not financial advice.')}{' '}

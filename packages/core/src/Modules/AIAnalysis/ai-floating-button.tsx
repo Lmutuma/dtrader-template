@@ -8,6 +8,13 @@ import { routes } from '@deriv/shared';
 import { localize } from '@deriv-com/translations';
 
 const ANCHOR_ID = 'ai-analysis-button-anchor';
+const STORAGE_KEY = 'ai_analysis_last_symbol';
+const DEFAULT_SYMBOL = 'R_100';
+
+const parse_symbol_from_url = (search: string): string | null => {
+    const params = new URLSearchParams(search);
+    return params.get('symbol');
+};
 
 const AIFloatingButton = () => {
     const history = useHistory();
@@ -16,51 +23,99 @@ const AIFloatingButton = () => {
 
     const [portal_target, setPortalTarget] = React.useState<HTMLElement | null>(null);
 
-    // Find the purchase button wrapper and attach our anchor next to it.
-    // Re-runs whenever the route changes (to handle back navigation).
+    const [current_symbol, setCurrentSymbol] = React.useState<string>(() => {
+        // Priority: window store > URL param > localStorage > default
+        const from_window = (window as any).__deriv_current_symbol;
+        if (from_window) return from_window;
+
+        const from_url = parse_symbol_from_url(location.search);
+        if (from_url) return from_url;
+
+        try {
+            return localStorage.getItem(STORAGE_KEY) ?? DEFAULT_SYMBOL;
+        } catch {
+            return DEFAULT_SYMBOL;
+        }
+    });
+
+    // Poll window.__deriv_current_symbol — updated by the trader package's
+    // MobX reaction whenever the user changes the active symbol.
+    React.useEffect(() => {
+        const sync_symbol = () => {
+            const symbol = (window as any).__deriv_current_symbol;
+            if (!symbol) return;
+            setCurrentSymbol(prev => {
+                if (prev === symbol) return prev;
+                try {
+                    localStorage.setItem(STORAGE_KEY, symbol);
+                } catch {
+                    // ignore
+                }
+                return symbol;
+            });
+        };
+
+        // Initial sync
+        sync_symbol();
+
+        // Poll — cheap (a single property read) and reliable
+        const interval = setInterval(sync_symbol, 250);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    // Main effect: attach anchor to the trade panel; re-attach whenever it disappears.
     React.useEffect(() => {
         if (is_on_ai_page) {
-            // On the AI page, no need to hunt for the trade panel
             const existing = document.getElementById(ANCHOR_ID);
             if (existing) existing.remove();
             setPortalTarget(null);
             return;
         }
 
+        const is_on_trade_route = location.pathname === routes.index || location.pathname.startsWith('/contract');
+        if (!is_on_trade_route) return;
+
         let cancelled = false;
 
-        const try_attach = () => {
-            if (cancelled) return true;
+        const attach_anchor = () => {
+            if (cancelled) return false;
 
+            // Already attached?
+            const existing = document.getElementById(ANCHOR_ID);
             const purchase_wrapper = document.querySelector('.purchase-button__wrapper');
+
             if (!purchase_wrapper) return false;
 
-            // Remove stale anchor from a previous mount
-            const existing = document.getElementById(ANCHOR_ID);
+            // If anchor exists and is still a sibling of the wrapper — leave it alone.
+            if (existing && existing.previousElementSibling === purchase_wrapper) {
+                return true;
+            }
+
+            // Otherwise (re)create it.
             if (existing) existing.remove();
 
             const anchor = document.createElement('div');
             anchor.id = ANCHOR_ID;
             anchor.className = 'ai-analysis-button-anchor';
             purchase_wrapper.parentElement?.insertBefore(anchor, purchase_wrapper.nextSibling);
-
             setPortalTarget(anchor);
             return true;
         };
 
-        // Try immediately
-        if (try_attach()) {
-            return () => {
-                cancelled = true;
-                const existing = document.getElementById(ANCHOR_ID);
-                if (existing) existing.remove();
-            };
-        }
+        // Initial attach attempt
+        attach_anchor();
 
-        // Fallback: observe the DOM until the trade panel appears
+        // Watch for the anchor being removed (e.g., symbol change re-renders the panel)
         const observer = new MutationObserver(() => {
-            if (try_attach()) observer.disconnect();
+            // Debounce: only re-attach if our anchor is no longer in the DOM
+            if (!document.getElementById(ANCHOR_ID)) {
+                attach_anchor();
+            }
         });
+
+        // Observe the whole body for subtree changes — the trade panel may be
+        // replaced at any depth when the symbol or contract type changes.
         observer.observe(document.body, { childList: true, subtree: true });
 
         return () => {
@@ -69,12 +124,11 @@ const AIFloatingButton = () => {
             const existing = document.getElementById(ANCHOR_ID);
             if (existing) existing.remove();
         };
-    }, [location.pathname, is_on_ai_page]);
+    }, [location.pathname, location.search, is_on_ai_page]);
 
-    const go_to_ai = () => history.push(routes.ai_analysis);
+    const go_to_ai = () => history.push(`${routes.ai_analysis}?symbol=${encodeURIComponent(current_symbol)}`);
     const go_to_trade = () => history.push(routes.index);
 
-    // On the AI analysis page: render a Back to Trade button at bottom-left
     if (is_on_ai_page) {
         return (
             <div className='ai-analysis-back-button'>
@@ -91,9 +145,7 @@ const AIFloatingButton = () => {
         );
     }
 
-    // On trade routes: render inside the trade panel via portal
     const is_on_trade_route = location.pathname === routes.index || location.pathname.startsWith('/contract');
-
     if (!is_on_trade_route || !portal_target) return null;
 
     return ReactDOM.createPortal(

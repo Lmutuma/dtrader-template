@@ -581,6 +581,15 @@ export default class TradeStore extends BaseStore {
             handleTradeParamsResetOnSymbolChange: action.bound,
         });
 
+        // Sync current symbol to window for cross-package consumers (AI Analysis feature)
+        reaction(
+            () => this.symbol,
+            symbol => {
+                (window as any).__deriv_current_symbol = symbol;
+            },
+            { fireImmediately: true }
+        );
+
         when(
             () => !isEmptyObject(this.contract_types_list_v2),
             () => {

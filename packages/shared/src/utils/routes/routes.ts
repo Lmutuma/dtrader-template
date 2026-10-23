@@ -13,9 +13,6 @@ export const routes = {
     // AI routes
     ai_analysis: '/ai-analysis',
 
-    // AI routes
-    ai_analysis: '/ai-analysis',
-
     // Reports routes
     reports: '/reports',
     positions: '/reports/positions',
