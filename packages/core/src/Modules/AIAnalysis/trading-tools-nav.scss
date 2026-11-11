@@ -1,23 +1,20 @@
-.ai-analysis-button-anchor {
+.trading-tools-nav-anchor {
     margin-top: 1.6rem;
     width: 100%;
 }
 
-.ai-analysis-button-inline {
+.trading-tools-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
     width: 100%;
 
     &__btn {
         width: 100%;
     }
-
-    &__label {
-        align-items: center;
-        display: inline-flex;
-        gap: 0.6rem;
-    }
 }
 
-.ai-analysis-back-button {
+.trading-tools-nav-back {
     bottom: 2.4rem;
     left: 2.4rem;
     position: fixed;
@@ -29,11 +26,5 @@
 
     &__btn {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    &__label {
-        align-items: center;
-        display: inline-flex;
-        gap: 0.6rem;
     }
 }

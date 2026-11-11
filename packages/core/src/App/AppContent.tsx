@@ -14,7 +14,7 @@ import BottomNav from './Containers/Layout/bottom-nav';
 import Header from './Containers/Layout/header';
 import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
-import { AIFloatingButton } from '../Modules/AIAnalysis';
+import { TradingToolsNav } from '../Modules/AIAnalysis';
 import Devtools from './Devtools';
 
 const AppContent: React.FC<{ passthrough: any }> = observer(({ passthrough }) => {
@@ -59,7 +59,7 @@ const AppContent: React.FC<{ passthrough: any }> = observer(({ passthrough }) =>
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>
-            <AIFloatingButton />
+            <TradingToolsNav />
             <AppToastMessages />
             <Devtools />
         </ThemeProvider>

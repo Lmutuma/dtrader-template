@@ -12,6 +12,7 @@ export const routes = {
 
     // AI routes
     ai_analysis: '/ai-analysis',
+    auto_trader: '/auto-trader',
 
     // Reports routes
     reports: '/reports',

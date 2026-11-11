@@ -1,7 +1,7 @@
 import AIAnalysis from './ai-analysis';
-import AIFloatingButton from './ai-floating-button';
+import TradingToolsNav from './trading-tools-nav';
 import './ai-analysis.scss';
-import './ai-floating-button.scss';
+import './trading-tools-nav.scss';
 
-export { AIAnalysis, AIFloatingButton };
+export { AIAnalysis, TradingToolsNav };
 export default AIAnalysis;

@@ -19,6 +19,8 @@ const MenuPage = React.lazy(() => import(/* webpackChunkName: "menu" */ 'Modules
 
 const AIAnalysis = React.lazy(() => import(/* webpackChunkName: "ai-analysis" */ 'Modules/AIAnalysis'));
 
+const AutoTrader = React.lazy(() => import(/* webpackChunkName: "auto-trader" */ 'Modules/AutoTrader'));
+
 const Trader = React.lazy(() => import(/* webpackChunkName: "trader" */ '@deriv/trader'));
 
 const Reports = React.lazy(() => import(/* webpackChunkName: "reports" */ '@deriv/reports'));
@@ -55,6 +57,12 @@ const getModules = () => {
                     protected: true,
                 },
             ],
+        },
+        {
+            path: routes.auto_trader,
+            component: AutoTrader,
+            getTitle: () => localize('Auto-Trader'),
+            protected: false,
         },
         {
             path: routes.ai_analysis,
