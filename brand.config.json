@@ -1,5 +1,5 @@
 {
-    "brand_name": "KashVex",
+    "brand_name": "EasyTrading Hub pro",
     "brand_logo": "brand/platform-logo.svg",
     "brand_logo_dark": "brand/platform-logo.svg",
     "brand_domain": "localhost",
@@ -8,7 +8,7 @@
         "production": "localhost"
     },
     "platform": {
-        "name": "KashVex Trading",
+        "name": "EasyTrading Hub pro",
         "description": "A whole new trading experience on a powerful yet easy to use platform.",
         "logo": "brand/platform-logo.svg",
         "home_url": "https://home.deriv.com/dashboard",
@@ -25,9 +25,12 @@
     "auth": {
         "staging": "https://staging-auth.deriv.com",
         "production": "https://auth.deriv.com",
-        "oauth_scopes": ["trade", "account_manage"],
-        "oauth_redirect_uri_staging": "https://localhost:8443",
-        "oauth_redirect_uri_production": "https://localhost:8443",
+        "oauth_scopes": [
+            "trade",
+            "account_manage"
+        ],
+        "oauth_redirect_uri_staging": "https://localhost:8443/",
+        "oauth_redirect_uri_production": "https://localhost:8443/",
         "oauth_app_id": ""
     },
     "derivws": {
