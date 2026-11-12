@@ -1,9 +1,10 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
 import { Text } from '@deriv/components';
 import { localize } from '@deriv-com/translations';
+import { routes } from '@deriv/shared';
 
 import { analyze, TAnalysis } from './indicators';
 import { useTicks } from './use-ticks';
@@ -26,6 +27,7 @@ const useCurrentSymbol = (): string => {
 };
 
 const AIAnalysis = observer(() => {
+    const history = useHistory();
     const current_symbol = useCurrentSymbol();
     const { prices, tick_count, error, loading } = useTicks(current_symbol);
     const analysis: TAnalysis | null = analyze(prices);
@@ -81,9 +83,18 @@ const AIAnalysis = observer(() => {
     return (
         <div className='ai-analysis'>
             <div className='ai-analysis__header'>
-                <Text as='h1' weight='bold' size='m' className='ai-analysis__title'>
-                    {localize('AI Analysis')} — {current_symbol}
-                </Text>
+                <div className='ai-analysis__title-row'>
+                    <Text as='h1' weight='bold' size='m' className='ai-analysis__title'>
+                        {localize('AI Analysis')} — {current_symbol}
+                    </Text>
+                    <button
+                        className='ai-analysis__cross-link'
+                        onClick={() => history.push(routes.auto_trader)}
+                        type='button'
+                    >
+                        {localize('Auto-Trader →')}
+                    </button>
+                </div>
                 <Text as='p' size='xs' className='ai-analysis__subtitle'>
                     {localize('Live indicator-based market signals. Not financial advice.')}{' '}
                     <span className='ai-analysis__tick_count'>({tick_count} ticks)</span>

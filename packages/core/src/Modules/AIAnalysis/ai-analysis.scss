@@ -7,6 +7,40 @@
         margin-bottom: 2.4rem;
     }
 
+    &__title-row {
+        align-items: center;
+        display: flex;
+        gap: 1.6rem;
+        justify-content: space-between;
+        margin-bottom: 0.4rem;
+    }
+
+    &__cross-link {
+        align-items: center;
+        background: var(--general-section-1);
+        border: 1px solid var(--general-section-2);
+        border-radius: 0.6rem;
+        color: var(--text-prominent);
+        cursor: pointer;
+        display: inline-flex;
+        font-size: 1.4rem;
+        font-weight: bold;
+        gap: 0.6rem;
+        padding: 0.8rem 1.6rem;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+
+        &:hover {
+            border-color: var(--brand-primary, #118e1c);
+            color: var(--brand-primary, #118e1c);
+            transform: translateX(2px);
+        }
+
+        &:active {
+            transform: translateX(0);
+        }
+    }
+
     &__title {
         margin-bottom: 0.4rem;
     }

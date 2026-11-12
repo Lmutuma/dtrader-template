@@ -29,9 +29,18 @@ const AutoTrader = () => {
             </div>
 
             <div className='auto-trader__header'>
-                <Text as='h1' weight='bold' size='m'>
-                    {localize('Auto-Trader')}
-                </Text>
+                <div className='auto-trader__title-row'>
+                    <Text as='h1' weight='bold' size='m'>
+                        {localize('Auto-Trader')}
+                    </Text>
+                    <button
+                        className='auto-trader__cross-link'
+                        onClick={() => history.push(routes.ai_analysis)}
+                        type='button'
+                    >
+                        {localize('← AI Analysis')}
+                    </button>
+                </div>
                 <Text as='p' size='xs' className='auto-trader__subtitle'>
                     {localize(
                         'Configure and run automated trades. All limits are enforced — trading stops automatically when any limit is reached.'
